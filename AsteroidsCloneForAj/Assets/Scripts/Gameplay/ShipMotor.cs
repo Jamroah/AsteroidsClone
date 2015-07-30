@@ -14,7 +14,22 @@ public class ShipMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        controller.Rotate(Input.GetAxisRaw("Horizontal"));
+        // We send a reversed value because of Unity. Grr.
+        controller.Rotate(-Input.GetAxisRaw("Horizontal"));
+
+        if(Input.GetButtonDown("Fire1"))
+        {
+            controller.Fire();
+        }
+
+        if(Input.GetButton("Accelerate"))
+        {
+            controller.Accelerate();
+        }
+
+        if (Input.GetButtonUp("Accelerate"))
+        {
+            controller.Stopping();
+        }
     }
 }

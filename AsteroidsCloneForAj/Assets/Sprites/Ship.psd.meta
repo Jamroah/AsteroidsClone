@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: f3818370234293a4d8168e8e55bbcbbc
-timeCreated: 1438178197
+guid: 649514dd12ce8614984c29ae7b8c3c34
+timeCreated: 1438212495
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: ShipIdle
-    21300002: ShipAccel1
-    21300004: ShipAccel2
-    21300006: ShipAccel3
+    21300000: Ship_0
+    21300002: Ship_1
+    21300004: Ship_2
+    21300006: Ship_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -53,7 +53,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: ShipIdle
+    - name: Ship_0
       rect:
         serializedVersion: 2
         x: 0
@@ -61,9 +61,9 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: ShipAccel1
+    - name: Ship_1
       rect:
         serializedVersion: 2
         x: 256
@@ -71,9 +71,9 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: ShipAccel2
+    - name: Ship_2
       rect:
         serializedVersion: 2
         x: 512
@@ -81,9 +81,9 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: ShipAccel3
+    - name: Ship_3
       rect:
         serializedVersion: 2
         x: 768
@@ -91,7 +91,7 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
