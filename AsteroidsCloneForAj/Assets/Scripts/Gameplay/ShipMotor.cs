@@ -8,12 +8,15 @@ public class ShipMotor : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        controller = this.AddOrGetComponent<ShipController>();
+        controller = gameObject.AddOrGetComponent<ShipController>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!controller.canControl)
+            return;
+
         // We send a reversed value because of Unity. Grr.
         controller.Rotate(-Input.GetAxisRaw("Horizontal"));
 

@@ -1,14 +1,16 @@
 fileFormatVersion: 2
-guid: 649514dd12ce8614984c29ae7b8c3c34
-timeCreated: 1438278671
+guid: 94b22b8ac655f224b87bb46df951eb00
+timeCreated: 1438315295
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Ship_0
-    21300002: Ship_1
-    21300004: Ship_2
-    21300006: Ship_3
-    21300008: Death Particle
+    21300000: AJ_Head
+    21300002: AJ_Eye
+    21300004: AJ_Mouth
+    21300006: AJ_0
+    21300008: AJ_1
+    21300010: AJ_2
+    21300012: AJ_3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,55 +56,45 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: Ship_0
+    - name: AJ_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 256
-        height: 256
+        y: 4
+        width: 206
+        height: 249
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Ship_1
+    - name: AJ_1
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
-        width: 256
-        height: 256
+        x: 206
+        y: 216
+        width: 30
+        height: 30
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Ship_2
+    - name: AJ_2
       rect:
         serializedVersion: 2
-        x: 512
-        y: 0
-        width: 256
-        height: 256
+        x: 206
+        y: 175
+        width: 30
+        height: 30
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Ship_3
+    - name: AJ_3
       rect:
         serializedVersion: 2
-        x: 768
-        y: 0
-        width: 256
-        height: 256
+        x: 216
+        y: 11
+        width: 29
+        height: 59
       alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: Death Particle
-      rect:
-        serializedVersion: 2
-        x: 1036
-        y: 109
-        width: 244
-        height: 38
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

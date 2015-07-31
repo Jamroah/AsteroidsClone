@@ -8,26 +8,40 @@ public class ShipController : ScreenwrapObject
 
     public float maxSpeed;
     public float acceleration;
-    //public float linearDrag;
     [Range(5, 10)]
     public float rotSpeed;
+    public bool canControl;
+
+    public ParticleSystem deathParticles;
 
     private float velocity;
 
     private Rigidbody2D m_rigidbody2D;
-    private GameObjectPool m_bulletPool;
+    private Collider2D m_collider2D;
+    private SpriteRenderer m_spriteRenderer;
     private Animator m_anim;
 
-    // Use this for initialization
+    private static GameObjectPool m_bulletPool;
+
     public override void Start()
     {
         base.Start();
 
-        m_rigidbody2D = GetComponent<Rigidbody2D>();
-        m_anim = GetComponent<Animator>();
-
-        if(bullet != null)
+        if (bullet != null && m_bulletPool == null)
             m_bulletPool = new GameObjectPool(bullet, 5, false);
+    }
+
+    public void Initialise()
+    {
+        GameManager.PlayerShip = this;
+
+        canControl = true;
+
+        m_rigidbody2D = GetComponent<Rigidbody2D>();
+        m_collider2D = GetComponent<Collider2D>();
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
+        m_anim = GetComponent<Animator>();
+        Stopping();
     }
 
     public void Fire()
@@ -44,12 +58,11 @@ public class ShipController : ScreenwrapObject
         // Simply get the direction vector between the center of the ship and the gun. 
         // Luckily it's pointing in the direction we want.
         // If there were multiple guns you'd have to define the center of each gun to get the right direction vectors.
-        bullet.GetComponent<Bullet>().SetDirection(gun.transform.position - m_transform.position);
+        bullet.GetComponent<Bullet>().Fire(gun.transform.position - m_transform.position, gameObject);
     }
 
     public void Accelerate()
     {
-        //m_transform.Translate((gun.transform.position - m_transform.position));
         m_rigidbody2D.AddForce(m_transform.up * acceleration);
         m_anim.SetBool("Accelerating", true);
     }
@@ -62,5 +75,50 @@ public class ShipController : ScreenwrapObject
     public void Rotate(float direction)
     {
         m_transform.Rotate((Vector3.forward * direction) * rotSpeed);
+    }
+
+    public override void Explode()
+    {
+        GameManager.TakeDamage(1);
+        canControl = false;
+        deathParticles.Play();
+        m_rigidbody2D.velocity = Vector2.zero;
+        m_spriteRenderer.enabled = false;
+        m_collider2D.enabled = false;
+    }
+
+    //void Reset()
+    //{
+    //    canControl = true;
+    //    m_transform.position = Vector2.zero;
+    //    m_transform.rotation = Quaternion.identity;
+    //    Stopping();
+    //    StartCoroutine(Invincibility());
+    //}
+
+    public IEnumerator Invincibility()
+    {
+        m_collider2D.enabled = false;
+
+        float seconds = 0;
+
+        while (seconds <= 2)
+        {
+            m_spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(0.05f);
+            m_spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(0.05f);
+            seconds += 0.1f;
+        }
+
+        m_spriteRenderer.enabled = true;
+
+        m_collider2D.enabled = true;
+    }
+
+    public void ResetToCenter()
+    {
+        m_transform.position = Vector2.zero;
+        m_transform.rotation = Quaternion.identity;
     }
 }

@@ -118,29 +118,29 @@ public class StopWatch: Singleton<StopWatch>
         }
 
         m_timers.Add(uid, T);
-        instance.m_countdownInstances.Add(uid, instance._StartWatch(uid));
+        Instance.m_countdownInstances.Add(uid, Instance._StartWatch(uid));
     }
 
     public static void StartTimer(string uid)
     {
-        if (!instance.m_countdownInstances.ContainsKey(uid))
+        if (!Instance.m_countdownInstances.ContainsKey(uid))
         {
             Debug.Log("err404 IEnumerator doesn't exist");
             return;
         }
 
         Debug.Log("Starting Timer: " + uid);
-        instance.StartCoroutine(instance.m_countdownInstances[uid]);
+        Instance.StartCoroutine(Instance.m_countdownInstances[uid]);
     }
 
     public static void StopTimer(string uid)
     {
-        if (!instance.m_countdownInstances.ContainsKey(uid))
+        if (!Instance.m_countdownInstances.ContainsKey(uid))
         {
             return;
         }
 
-        instance.StopCoroutine(instance.m_countdownInstances[uid]);
+        Instance.StopCoroutine(Instance.m_countdownInstances[uid]);
     }
 
     public static void ResetTimer(string uid)
@@ -162,9 +162,9 @@ public class StopWatch: Singleton<StopWatch>
             m_timers.Remove(uid);
         }
 
-        if (instance.m_countdownInstances.ContainsKey(uid))
+        if (Instance.m_countdownInstances.ContainsKey(uid))
         {
-            instance.m_countdownInstances.Remove(uid);
+            Instance.m_countdownInstances.Remove(uid);
         }
     }
 

@@ -11,7 +11,10 @@ public class GameObjectPool
     private Transform m_parent;
     private int m_capacity;
     private bool m_willGrow;
+    private bool m_uiObject = false;
     private List<GameObject> m_pool;
+
+    public GameObjectPool() { }
 
     public GameObjectPool(GameObject objectToPool, int capacity, bool willGrow)
     {
@@ -39,11 +42,31 @@ public class GameObjectPool
         Initialise();
     }
 
+    public GameObjectPool(GameObject objectToPool, int capacity, bool willGrow, GameObject parent, bool isUIObject)
+    {
+        m_pooledObject = objectToPool;
+        m_capacity = capacity;
+        m_willGrow = willGrow;
+        m_parent = parent.transform;
+        m_uiObject = isUIObject;
+        Initialise(m_uiObject);
+    }
+
+    public GameObjectPool(GameObject objectToPool, int capacity, bool willGrow, Transform parent, bool isUIObject)
+    {
+        m_pooledObject = objectToPool;
+        m_capacity = capacity;
+        m_willGrow = willGrow;
+        m_parent = parent;
+        m_uiObject = isUIObject;
+        Initialise(m_uiObject);
+    }
+
     /// <summary>
     /// Activates a game object stored in the pool. If pool is full, instantiates a new game object, adds it to the pool and activates it.
     /// </summary>
     /// <returns></returns>
-    public GameObject Get(bool active = false)
+    public GameObject Get(bool active)
     {
         for (int i = 0; i < m_pool.Count; i++)
         {
@@ -71,7 +94,18 @@ public class GameObjectPool
         return null;
     }
 
-    private void Initialise()
+    public void DisableAll()
+    {
+        for (int i = 0; i < m_pool.Count; i++)
+        {
+            if (m_pool[i].activeInHierarchy)
+            {
+                m_pool[i].SetActive(false);
+            }
+        }
+    }
+
+    private void Initialise(bool isUIObject = false)
     {
         m_pool = new List<GameObject>();
 
@@ -81,7 +115,10 @@ public class GameObjectPool
             go.SetActive(false);
 
             if (m_parent != null)
-                go.transform.parent = m_parent;
+                if (!isUIObject)
+                    go.transform.parent = m_parent;
+                else
+                    go.transform.SetParent(m_parent, false);
 
             m_pool.Add(go);
         }
