@@ -5,17 +5,25 @@ public class ScreenwrapObject : MonoBehaviour, IExplodable
 {
     public bool startOffScreen;
 
-    protected Camera m_camera;
+    protected Camera MainCamera
+    {
+        get
+        {
+            if(m_camera == null)
+                m_camera = Camera.main;
+            return m_camera;
+        }
+    }
     protected Transform m_transform;
     protected Vector2 m_position;
-
     protected Renderer[] m_renderers;
+
     private Vector3 m_viewportPosition = new Vector3();
     private bool wrapX, wrapY, hasAppeared = true, canWrap = true;
+    private Camera m_camera;
 
-    public virtual void Start()
+    public virtual void Awake()
     {
-        m_camera = Camera.main;
         // Create a reference to stop from incessant GetComponent calls.
         m_transform = transform;
     }
@@ -53,7 +61,7 @@ public class ScreenwrapObject : MonoBehaviour, IExplodable
     void DoScreenWrap()
     {
         m_position = m_transform.localPosition;
-        m_viewportPosition = m_camera.WorldToViewportPoint(m_position);
+        m_viewportPosition = MainCamera.WorldToViewportPoint(m_position);
 
         if(CheckIfVisible())
         {

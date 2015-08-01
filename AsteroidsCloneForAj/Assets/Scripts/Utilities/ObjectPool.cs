@@ -96,6 +96,9 @@ public class GameObjectPool
 
     public void DisableAll()
     {
+        if (m_pool == null)
+            return;
+
         for (int i = 0; i < m_pool.Count; i++)
         {
             if (m_pool[i].activeInHierarchy)

@@ -18,19 +18,21 @@ public class ShipMotor : MonoBehaviour
             return;
 
         // We send a reversed value because of Unity. Grr.
-        controller.Rotate(-Input.GetAxisRaw("Horizontal"));
+        controller.Rotate(-InputManager.GetAxisRaw("Horizontal", INPUT_CONTEXT.GAME));
 
-        if(Input.GetButtonDown("Fire1"))
+        float accelAxis = InputManager.GetAxisRaw("Accelerate", INPUT_CONTEXT.GAME);
+
+        if(InputManager.GetButtonDown("Fire", INPUT_CONTEXT.GAME))
         {
             controller.Fire();
         }
 
-        if(Input.GetButton("Accelerate"))
+        if (InputManager.GetButton("Accelerate", INPUT_CONTEXT.GAME) || accelAxis > 0)
         {
             controller.Accelerate();
         }
 
-        if (Input.GetButtonUp("Accelerate"))
+        if (InputManager.GetButtonUp("Accelerate", INPUT_CONTEXT.GAME) || accelAxis < 1)
         {
             controller.Stopping();
         }

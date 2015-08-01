@@ -26,7 +26,7 @@ public class Bullet : ScreenwrapObject
         if (col.gameObject == m_owner)
             return;
 
-        if(col.tag == "Hitable")
+        if (col.tag == "Hitable" || col.tag == "Asteroid")
         {
             DisableBullet();
             col.gameObject.GetComponent<IExplodable>().Explode();

@@ -3,20 +3,33 @@ using System.Collections;
 
 public class Asteroid : ScreenwrapObject
 {
-    private Rigidbody2D m_rigidbody2D;
+    public Sprite[] sprites;
 
-    public override void Start()
+    protected Rigidbody2D m_rigidbody2D;
+
+    public virtual void Start()
     {
-        base.Start();
-        m_rigidbody2D = GetComponent<Rigidbody2D>();
 
-        m_rigidbody2D.AddForce((GetRandomScreenPosition() - new Vector2(m_transform.position.x, m_transform.position.y)) * Random.Range(5, 15));
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        m_rigidbody2D = GetComponent<Rigidbody2D>(); 
         m_rigidbody2D.AddTorque(Random.Range(-100, 100));
+
+        if(sprites.Length > 0)
+            GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
     }
 
     public override void Update()
     {
         base.Update();
+    }
+
+    public virtual void SetTrajectory(Vector2 fromPosition)
+    {
+
     }
 
     public virtual void OnTriggerEnter2D(Collider2D col)
@@ -27,8 +40,8 @@ public class Asteroid : ScreenwrapObject
         }
     }
 
-    Vector2 GetRandomScreenPosition()
+    protected Vector2 GetRandomScreenPosition()
     {
-        return m_camera.ViewportToWorldPoint(new Vector2(Random.Range(0, 100f) / 100f, Random.Range(0, 100f) / 100f));
+        return MainCamera.ViewportToWorldPoint(new Vector2(Random.Range(0, 100f) / 100f, Random.Range(0, 100f) / 100f));
     }
 }

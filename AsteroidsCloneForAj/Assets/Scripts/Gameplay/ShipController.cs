@@ -6,15 +6,11 @@ public class ShipController : ScreenwrapObject
     public GameObject bullet;
     public GameObject gun;
 
-    public float maxSpeed;
     public float acceleration;
-    [Range(5, 10)]
     public float rotSpeed;
     public bool canControl;
 
     public ParticleSystem deathParticles;
-
-    private float velocity;
 
     private Rigidbody2D m_rigidbody2D;
     private Collider2D m_collider2D;
@@ -23,12 +19,10 @@ public class ShipController : ScreenwrapObject
 
     private static GameObjectPool m_bulletPool;
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
-
         if (bullet != null && m_bulletPool == null)
-            m_bulletPool = new GameObjectPool(bullet, 5, false);
+            m_bulletPool = new GameObjectPool(bullet, 4, false);
     }
 
     public void Initialise()
@@ -87,15 +81,6 @@ public class ShipController : ScreenwrapObject
         m_collider2D.enabled = false;
     }
 
-    //void Reset()
-    //{
-    //    canControl = true;
-    //    m_transform.position = Vector2.zero;
-    //    m_transform.rotation = Quaternion.identity;
-    //    Stopping();
-    //    StartCoroutine(Invincibility());
-    //}
-
     public IEnumerator Invincibility()
     {
         m_collider2D.enabled = false;
@@ -114,11 +99,5 @@ public class ShipController : ScreenwrapObject
         m_spriteRenderer.enabled = true;
 
         m_collider2D.enabled = true;
-    }
-
-    public void ResetToCenter()
-    {
-        m_transform.position = Vector2.zero;
-        m_transform.rotation = Quaternion.identity;
     }
 }
