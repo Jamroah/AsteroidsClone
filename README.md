@@ -12,7 +12,7 @@ CONTROLS:
 
 Arrow Keys -> Movement
 
-Space -> Thrust
+Space -> Fire
 
 Return/Esc/P -> Pause
 
