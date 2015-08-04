@@ -7,11 +7,15 @@ public class GameManager : Singleton<GameManager>
     public GameObject ship;
     public GameObject asteroidBig;
     public GameObject asteroidSmall;
+    public GameObject enemyShip;
+    public GameObject bullet;
     public GameObject gameOverPanel;
 
     public static ShipController PlayerShip;
     public static GameObjectPool BigAsteroidPool;
     public static GameObjectPool SmallAsteroidPool;
+    public static GameObjectPool EnemyShipPool;
+    public static GameObjectPool EnemyBulletPool;
 
     private static int m_maxLives = 3;
     private static int m_currentLives;
@@ -19,26 +23,26 @@ public class GameManager : Singleton<GameManager>
 
     //private static Coroutine m_spawnAsteroids;
 
-    public static int MaxHealth
+    public static int MaxLives
     {
         get { return m_maxLives; }
         private set { }
     }
 
-    public static int CurrentHealth
+    public static int CurrentLives
     {
         get { return m_currentLives; }
-        private set
+        set
         {          
             if (value <= 0)
             {
                 HighScore = Score;
                 ModalPanel.GameOver(ResetBoard);
                 Instance.StopAllCoroutines();
-                //Instance.StopCoroutine(Instance.SpawnAsteroids());
             }
             else if (value < m_currentLives)
             {
+                Debug.Log("Hull Damage Taken!");
                 Instance.StartCoroutine(Instance.SpawnShip(true, 2));
             }
 
@@ -84,7 +88,8 @@ public class GameManager : Singleton<GameManager>
     {
         BigAsteroidPool = new GameObjectPool(asteroidBig, 10, true, transform);
         SmallAsteroidPool = new GameObjectPool(asteroidSmall, 20, true, transform);
-        //GameStart();
+        EnemyShipPool = new GameObjectPool(enemyShip, 1, false, transform);
+        EnemyBulletPool = new GameObjectPool(bullet, 10, true, transform);
         InputManager.PushInputContext(INPUT_CONTEXT.GAME);
         ModalPanel.Menu(GameStart);
     }
@@ -98,10 +103,9 @@ public class GameManager : Singleton<GameManager>
     }
 
     public static void GameStart()
-    {
-        
+    {       
         Instance.gameOverPanel.SetActive(false);
-        CurrentHealth = MaxHealth;
+        CurrentLives = MaxLives;
         Instance.StartCoroutine(Instance.SpawnShip(false, 0));
         Instance.StartCoroutine(Instance.SpawnAsteroids());
         BigAsteroidPool.DisableAll();
@@ -123,16 +127,29 @@ public class GameManager : Singleton<GameManager>
         bool bossTime = false;
         while (!bossTime)
         {
-            BigAsteroidPool.Get(true).GetComponent<Asteroid>().SetTrajectory(GetRandomSpawnPoint());
-            yield return new WaitForSeconds(Score > 2500 ? (Score > 5000 ? 0.5f : 1) : 2);
+            BigAsteroidPool.Get(true).GetComponent<Asteroid>().SetTrajectory(MathV2D.GetRandomVectorOutsideCamera(AXIS_BIAS.BOTH));
+
+            // Arbitrary 15% chance of spawning an enemy space muffin. One at a time.
+            if (Random.Range(0, 100) > 85)
+            {
+                GameObject eship = EnemyShipPool.Get(true);
+                if(eship != null)
+                    eship.GetComponent<EnemyShip>().SetSpawnPoint(MathV2D.GetRandomVectorOutsideCamera(AXIS_BIAS.HORIZONTAL));
+            }
+
+            yield return new WaitForSeconds(Score > 2500 ? (Score > 5000 ? 1f : 1.5f) : 2);
 
             if (Score > 10000)
+            {
                 bossTime = true;
+                Messenger.Broadcast("Boss Time", MessengerMode.DONT_REQUIRE_LISTENER);
+            }
         }
     }
 
     public IEnumerator SpawnShip(bool invincible, float delay)
     {
+        Debug.Log("Spawning the ship in " + delay + " seconds");
         yield return new WaitForSeconds(delay);
 
         if (PlayerShip == null)
@@ -144,32 +161,5 @@ public class GameManager : Singleton<GameManager>
             Instance.StartCoroutine(PlayerShip.Invincibility());
     }
 
-    public static void TakeDamage(int damage)
-    {
-        CurrentHealth -= damage;
-        Messenger.Broadcast("Update UI");
-    }
-
-    // Could probably be better. 
-    // Alternatively could have used a particle system but I think that would have overcomplicated things not being able to use GameObjects as particles.
-    static Vector2 GetRandomSpawnPoint()
-    {
-        float chance = Random.Range(0, 101);
-
-        Vector2 coords = new Vector2(Random.Range(25, 75f) / 100f, Random.Range(25, 75f) / 100f);
-
-        // An improvement would be to detect which edge the random coord is closest to and move the difference so you don't get asteroids spawning too far out.
-        // This'll do for for now. It works and other things take priority.
-        if (chance < 25)
-            coords.x -= 1;
-        else if( chance < 50)
-            coords.x += 1;
-        else if (chance < 75)
-            coords.y += 1;
-        else if (chance < 100)
-            coords.y -= 1;
-
-        Debug.Log(coords);
-        return Camera.main.ViewportToWorldPoint(coords);
-    }
+    
 }

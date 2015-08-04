@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShipController : ScreenwrapObject
+public class ShipController : ScreenwrapObject, IDamageable
 {
     public GameObject bullet;
     public GameObject gun;
@@ -19,10 +19,30 @@ public class ShipController : ScreenwrapObject
 
     private static GameObjectPool m_bulletPool;
 
+    public int MaxHealth
+    {
+        get { return GameManager.MaxLives; }
+        set { }
+    }
+
+    public int CurrentHealth
+    {
+        get { return GameManager.CurrentLives; }
+        set { GameManager.CurrentLives = value; }
+    }
+
     public void Start()
     {
         if (bullet != null && m_bulletPool == null)
-            m_bulletPool = new GameObjectPool(bullet, 4, false);
+            m_bulletPool = new GameObjectPool(bullet, 5, false); // One more bullet on screen allowed than original Asteroids to account for wide screen.
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "Hitable" || col.tag == "Asteroid")
+        {
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(1, null);
+        }
     }
 
     public void Initialise()
@@ -52,7 +72,7 @@ public class ShipController : ScreenwrapObject
         // Simply get the direction vector between the center of the ship and the gun. 
         // Luckily it's pointing in the direction we want.
         // If there were multiple guns you'd have to define the center of each gun to get the right direction vectors.
-        bullet.GetComponent<Bullet>().Fire(gun.transform.position - m_transform.position, gameObject);
+        bullet.GetComponent<Bullet>().Fire(gameObject, gun.transform.position, m_transform.rotation.eulerAngles.z + 90, 15);
     }
 
     public void Accelerate()
@@ -71,9 +91,21 @@ public class ShipController : ScreenwrapObject
         m_transform.Rotate((Vector3.forward * direction) * rotSpeed);
     }
 
-    public override void Explode()
+    public void TakeDamage(int value, GameObject culprit)
     {
-        GameManager.TakeDamage(1);
+        if (culprit == gameObject)
+        {
+            Debug.Log("Stop hitting yourself");
+            return;
+        }
+
+        CurrentHealth -= value;
+        Die();
+        Messenger.Broadcast("Update UI");
+    }
+
+    public void Die()
+    {
         canControl = false;
         deathParticles.Play();
         m_rigidbody2D.velocity = Vector2.zero;

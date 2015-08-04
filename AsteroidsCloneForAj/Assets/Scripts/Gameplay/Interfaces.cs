@@ -1,15 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public interface IExplodable
+public interface IDamageable
 {
-    void Explode();
-}
-
-// Weirdly named I guess but works for the boss and player so whatevs
-public interface IDamageable<T>
-{
-    T MaxHealth {get; set;}
-    T CurrentHealth { get; set; }
-    void Damage(T amount);
+    int MaxHealth { get; set; }
+    int CurrentHealth { get; set; }
+    void TakeDamage(int value, GameObject culprit);
+    void Die();
 }

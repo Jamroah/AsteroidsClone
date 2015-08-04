@@ -1,15 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Asteroid : ScreenwrapObject
+public class Asteroid : ScreenwrapObject, IDamageable
 {
     public Sprite[] sprites;
 
     protected Rigidbody2D m_rigidbody2D;
+    protected int m_currentHealth;
 
-    public virtual void Start()
+    public virtual int MaxHealth
     {
+        get { return 1; }
+        set { }
+    }
 
+    public virtual int CurrentHealth
+    {
+        get { return m_currentHealth; }
+        set { m_currentHealth = value; }
     }
 
     public override void OnEnable()
@@ -17,6 +25,7 @@ public class Asteroid : ScreenwrapObject
         base.OnEnable();
         m_rigidbody2D = GetComponent<Rigidbody2D>(); 
         m_rigidbody2D.AddTorque(Random.Range(-100, 100));
+        CurrentHealth = MaxHealth;
 
         if(sprites.Length > 0)
             GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
@@ -25,6 +34,17 @@ public class Asteroid : ScreenwrapObject
     public override void Update()
     {
         base.Update();
+    }
+
+    public virtual void Die()
+    {
+        // Here will be a particle system;
+        gameObject.SetActive(false);
+    }
+
+    public virtual void TakeDamage(int value, GameObject culprit)
+    {
+        Die();
     }
 
     public virtual void SetTrajectory(Vector2 fromPosition)
@@ -36,7 +56,8 @@ public class Asteroid : ScreenwrapObject
     {
         if (col.tag == "Hitable")
         {
-            col.gameObject.GetComponent<IExplodable>().Explode();
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(1, gameObject);
+            //Die();
         }
     }
 

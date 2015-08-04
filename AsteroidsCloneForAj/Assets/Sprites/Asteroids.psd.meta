@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3547a69e6221b9a43a5575642402f03c
-timeCreated: 1438264924
+timeCreated: 1438521060
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,7 @@ TextureImporter:
     21300018: Asteroids_9
     21300020: Asteroids_10
     21300022: Asteroids_11
+    21300024: SpaceShip
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -180,6 +181,16 @@ TextureImporter:
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SpaceShip
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

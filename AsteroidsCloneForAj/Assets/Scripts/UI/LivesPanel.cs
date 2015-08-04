@@ -26,7 +26,7 @@ public class LivesPanel : MonoBehaviour
     {
         m_iconPool.DisableAll();
 
-        for(int i = 0; i < GameManager.CurrentHealth; i++)
+        for(int i = 0; i < GameManager.CurrentLives; i++)
         {
             m_iconPool.Get(true);
         }

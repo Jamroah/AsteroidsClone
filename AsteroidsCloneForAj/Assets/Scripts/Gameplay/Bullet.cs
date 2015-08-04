@@ -4,21 +4,13 @@ using System.Collections;
 public class Bullet : ScreenwrapObject
 {
     private GameObject m_owner;
+    private Rigidbody2D m_rigidbody2D;
 
-    private Vector2 m_direction = new Vector2();
-
-    // Use this for initialization
     public override void OnEnable()
     {
         base.OnEnable();
-        Invoke("DisableBullet", 1);
-    }
-
-    // Update is called once per frame
-    public override void Update()
-    {
-        base.Update();
-        m_transform.Translate(m_direction * 0.75f);
+        m_rigidbody2D = GetComponent<Rigidbody2D>();
+        Invoke("DisableBullet", 1f);
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -29,14 +21,19 @@ public class Bullet : ScreenwrapObject
         if (col.tag == "Hitable" || col.tag == "Asteroid")
         {
             DisableBullet();
-            col.gameObject.GetComponent<IExplodable>().Explode();
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(1, m_owner);
         }
     }
 
-    public void Fire(Vector2 direction, GameObject owner)
+    /// <summary>
+    /// Fires a bullet with a defined direction.
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="degrees"></param>
+    public void Fire(GameObject owner, Vector2 origin, float degrees, float force)
     {
-        m_direction = direction;
         m_owner = owner;
+        m_rigidbody2D.AddForce(MathV2D.OnEdgeOfCircle(degrees, force), ForceMode2D.Impulse);
     }
 
     private void DisableBullet()

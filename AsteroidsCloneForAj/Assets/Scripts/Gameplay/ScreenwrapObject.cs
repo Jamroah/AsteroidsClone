@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScreenwrapObject : MonoBehaviour, IExplodable
+public class ScreenwrapObject : MonoBehaviour
 {
     public bool startOffScreen;
 
@@ -51,11 +51,6 @@ public class ScreenwrapObject : MonoBehaviour, IExplodable
     public void EnableScreenWrap()
     {
         canWrap = true;
-    }
-
-    public virtual void Explode()
-    {
-
     }
 
     void DoScreenWrap()
