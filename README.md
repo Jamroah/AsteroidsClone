@@ -11,7 +11,9 @@ Also, I highly recommend you play until you reach 10,000 points! There is a supe
 CONTROLS:
 
 Arrow Keys -> Movement
+
 Space -> Thrust
+
 Return/Esc/P -> Pause
 
 Xbox 360 controller supported
