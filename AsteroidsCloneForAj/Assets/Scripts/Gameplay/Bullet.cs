@@ -33,7 +33,9 @@ public class Bullet : ScreenwrapObject
     public void Fire(GameObject owner, Vector2 origin, float degrees, float force)
     {
         m_owner = owner;
+        m_transform.position = origin;
         m_rigidbody2D.AddForce(MathV2D.OnEdgeOfCircle(degrees, force), ForceMode2D.Impulse);
+        AudioManager.PlaySFX("Bullet", 0.8f, 1.1f);
     }
 
     private void DisableBullet()

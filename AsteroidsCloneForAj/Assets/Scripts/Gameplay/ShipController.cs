@@ -50,6 +50,7 @@ public class ShipController : ScreenwrapObject, IDamageable
         GameManager.PlayerShip = this;
 
         canControl = true;
+        Debug.Log("Ship Initialised");
 
         m_rigidbody2D = GetComponent<Rigidbody2D>();
         m_collider2D = GetComponent<Collider2D>();
@@ -60,18 +61,12 @@ public class ShipController : ScreenwrapObject, IDamageable
 
     public void Fire()
     {
-        // Activate a bullet immediately (the "true" part) and hold a reference to it
+        // Activate a bullet immediately (the "true" part) and hold a reference to it because we need to check if it's null before we go any further
         GameObject bullet = m_bulletPool.Get(true);
 
         if (bullet == null)
             return;
 
-        // Spawn it at the gun's position.
-        bullet.transform.position = gun.transform.position;
-
-        // Simply get the direction vector between the center of the ship and the gun. 
-        // Luckily it's pointing in the direction we want.
-        // If there were multiple guns you'd have to define the center of each gun to get the right direction vectors.
         bullet.GetComponent<Bullet>().Fire(gameObject, gun.transform.position, m_transform.rotation.eulerAngles.z + 90, 15);
     }
 
@@ -111,6 +106,7 @@ public class ShipController : ScreenwrapObject, IDamageable
         m_rigidbody2D.velocity = Vector2.zero;
         m_spriteRenderer.enabled = false;
         m_collider2D.enabled = false;
+        AudioManager.PlaySFX("Ship Explosion");
     }
 
     public IEnumerator Invincibility()

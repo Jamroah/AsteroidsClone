@@ -6,7 +6,7 @@ public class ShipMotor : MonoBehaviour
     private ShipController controller;
 
     // Use this for initialization
-    void Start()
+    void OnEnable()
     {
         controller = gameObject.AddOrGetComponent<ShipController>();
     }
@@ -15,7 +15,10 @@ public class ShipMotor : MonoBehaviour
     void Update()
     {
         if (!controller.canControl)
+        {
+            Debug.Log("Ship control is disabled");
             return;
+        }
 
         // We send a reversed value because of Unity. Grr.
         controller.Rotate(-InputManager.GetAxisRaw("Horizontal", INPUT_CONTEXT.GAME));

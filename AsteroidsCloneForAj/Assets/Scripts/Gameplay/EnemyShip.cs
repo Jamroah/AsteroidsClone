@@ -12,7 +12,7 @@ public class EnemyShip : ScreenwrapObject, IDamageable
     public override void OnEnable()
     {
         base.OnEnable();
-        Invoke("Die", 10);
+        Invoke("Die", 7);
         Invoke("Fire", 1);
     }
 
@@ -28,7 +28,7 @@ public class EnemyShip : ScreenwrapObject, IDamageable
 
         // Very, very simple "AI" that allows the enemy ship to loosely avoid asteroids.
         // The ships do a similar thing in the original.
-        Debug.DrawLine(m_transform.position + new Vector3(0, -1.5f, 0), m_transform.position + new Vector3(0, 1.5f, 0), Color.yellow);
+        //Debug.DrawLine(m_transform.position + new Vector3(0, -1.5f, 0), m_transform.position + new Vector3(0, 1.5f, 0), Color.yellow);
 
         hit = Physics2D.Linecast(m_transform.position + new Vector3(0, -2f, 0), m_transform.position + new Vector3(0, 2f, 0), 1 << LayerMask.NameToLayer("Asteroids"));
 
@@ -88,6 +88,6 @@ public class EnemyShip : ScreenwrapObject, IDamageable
 
         bullet.transform.position = m_transform.position;
         bullet.GetComponent<Bullet>().Fire(gameObject, m_transform.position, Random.Range(0f, 360f), 7);
-        Invoke("Fire", Random.Range(0.5f, 1.5f));
+        Invoke("Fire", Random.Range(0.75f, 1.25f));
     }
 }

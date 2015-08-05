@@ -13,7 +13,7 @@ public struct MathV2D
 {
     public static Vector2 OnEdgeOfCircle(float deg, float radius)
     {
-        float rad = deg * Mathf.PI / 180.0f;
+        float rad = deg * Mathf.Deg2Rad;
         return new Vector2(radius * Mathf.Cos(rad), radius * Mathf.Sin(rad));
     }
 
@@ -69,4 +69,9 @@ public struct MathV2D
     {
         return GetRandomVectorOutsideCamera(AXIS_BIAS.BOTH);
     }
+
+    //public static Quaternion LookAt2D(Transform from)
+    //{
+
+    //}
 }

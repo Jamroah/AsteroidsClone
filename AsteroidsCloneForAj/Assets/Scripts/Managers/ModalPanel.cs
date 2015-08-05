@@ -17,12 +17,19 @@ public class ModalPanel : Singleton<ModalPanel>
     public Text title;
     public Text subtitle;
 
+    // Instead of creating a script just for the boss UI we'll put it in here.
+    public GameObject bossPanel;
+    public Text warning;
+    public Text message;
+    public Slider bossHealth;
+
     private static UnityAction action;
     private static string button;
 
     void Awake()
     {
         ClosePanel();
+        bossPanel.SetActive(false);
     }
 
     void Update()
@@ -61,7 +68,7 @@ public class ModalPanel : Singleton<ModalPanel>
         Instance.modalPanel.SetActive(false);
     }
 
-    // The modular function. The other functions are prettu much this just more focussed.
+    // The modular function. The other functions are pretty much this only more focussed.
     public static void Message(string msg1, string msg2, string buttonString, UnityAction callback, TIMESCALE_OPTIONS options)
     {
         OpenPanel(options);
@@ -72,6 +79,23 @@ public class ModalPanel : Singleton<ModalPanel>
         button = buttonString;
 
         action = () => { callback(); ClosePanel(); };
+    }
+
+    public static void Message(string msg1, string msg2, string buttonString, UnityAction callback, bool closePanel)
+    {
+        OpenPanel(TIMESCALE_OPTIONS.TIMESCALE_1);
+
+        Instance.title.text = msg1;
+        Instance.subtitle.text = msg2;
+
+        button = buttonString;
+
+        action = () =>
+        {
+            callback();
+            if (closePanel)
+                ClosePanel();
+        };
     }
 
     public static void Menu(UnityAction callback)
@@ -124,5 +148,18 @@ public class ModalPanel : Singleton<ModalPanel>
     {
         InputManager.PopInputContext(INPUT_CONTEXT.PAUSE);
         ClosePanel();
+    }
+
+    public static void EnableBossPanel()
+    {
+        Instance.bossPanel.SetActive(true);
+        Instance.message.enabled = true;
+        Instance.warning.enabled = true;
+    }
+
+    public static void DisableBossMessage()
+    {
+        Instance.message.enabled = false;
+        Instance.warning.enabled = false;
     }
 }

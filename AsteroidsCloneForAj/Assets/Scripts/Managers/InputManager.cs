@@ -21,6 +21,12 @@ public class InputManager
 
     public static void PushInputContext(INPUT_CONTEXT context)
     {
+        if (context == contextStack.Peek())
+        {
+            Debug.Log("[InputManager.cs] Context is already " + contextStack.Peek().ToString());
+            return;
+        }
+
         contextStack.Push(context);
         Debug.Log("[InputManager.cs] Added context " + contextStack.Peek().ToString());
     }

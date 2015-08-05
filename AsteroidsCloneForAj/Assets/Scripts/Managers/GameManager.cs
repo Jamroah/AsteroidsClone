@@ -8,8 +8,8 @@ public class GameManager : Singleton<GameManager>
     public GameObject asteroidBig;
     public GameObject asteroidSmall;
     public GameObject enemyShip;
-    public GameObject bullet;
-    public GameObject gameOverPanel;
+    public GameObject enemyBullet;
+    //public GameObject gameOverPanel;
 
     public static ShipController PlayerShip;
     public static GameObjectPool BigAsteroidPool;
@@ -35,8 +35,7 @@ public class GameManager : Singleton<GameManager>
         set
         {          
             if (value <= 0)
-            {
-                HighScore = Score;
+            {               
                 ModalPanel.GameOver(ResetBoard);
                 Instance.StopAllCoroutines();
             }
@@ -86,10 +85,12 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
+        AudioManager.PlayBGM("Menu", TRANSITION.INSTANT);
+
         BigAsteroidPool = new GameObjectPool(asteroidBig, 10, true, transform);
         SmallAsteroidPool = new GameObjectPool(asteroidSmall, 20, true, transform);
         EnemyShipPool = new GameObjectPool(enemyShip, 1, false, transform);
-        EnemyBulletPool = new GameObjectPool(bullet, 10, true, transform);
+        EnemyBulletPool = new GameObjectPool(enemyBullet, 10, true, transform);
         InputManager.PushInputContext(INPUT_CONTEXT.GAME);
         ModalPanel.Menu(GameStart);
     }
@@ -100,25 +101,32 @@ public class GameManager : Singleton<GameManager>
             ModalPanel.PauseGame();
         else if (InputManager.GetButtonDown("Pause", INPUT_CONTEXT.PAUSE))
             ModalPanel.UnPauseGame();
+
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+            Score += 10000;
     }
 
     public static void GameStart()
     {       
-        Instance.gameOverPanel.SetActive(false);
+        //Instance.gameOverPanel.SetActive(false);
         CurrentLives = MaxLives;
         Instance.StartCoroutine(Instance.SpawnShip(false, 0));
         Instance.StartCoroutine(Instance.SpawnAsteroids());
         BigAsteroidPool.DisableAll();
         SmallAsteroidPool.DisableAll();
         Score = 0;
+        AudioManager.PlayBGM("Game", TRANSITION.INSTANT);
         Messenger.Broadcast("Update UI");    
     }
 
     public static void ResetBoard()
     {
+        HighScore = Score;
+        Messenger.Broadcast("Reset", MessengerMode.DONT_REQUIRE_LISTENER);
+        AudioManager.PlayBGM("Menu", TRANSITION.INSTANT);
         Instance.StopAllCoroutines();
         DestroyImmediate(PlayerShip.gameObject);
-        PlayerShip = null;
+        PlayerShip = null;       
         ModalPanel.Menu(GameStart);
     }
 
@@ -130,7 +138,7 @@ public class GameManager : Singleton<GameManager>
             BigAsteroidPool.Get(true).GetComponent<Asteroid>().SetTrajectory(MathV2D.GetRandomVectorOutsideCamera(AXIS_BIAS.BOTH));
 
             // Arbitrary 15% chance of spawning an enemy space muffin. One at a time.
-            if (Random.Range(0, 100) > 85)
+            if (Random.Range(0, 100) >= 85)
             {
                 GameObject eship = EnemyShipPool.Get(true);
                 if(eship != null)
@@ -139,7 +147,7 @@ public class GameManager : Singleton<GameManager>
 
             yield return new WaitForSeconds(Score > 2500 ? (Score > 5000 ? 1f : 1.5f) : 2);
 
-            if (Score > 10000)
+            if (Score >= 10000)
             {
                 bossTime = true;
                 Messenger.Broadcast("Boss Time", MessengerMode.DONT_REQUIRE_LISTENER);
