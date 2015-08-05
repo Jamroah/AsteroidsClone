@@ -17,7 +17,7 @@ public class ModalPanel : Singleton<ModalPanel>
     public Text title;
     public Text subtitle;
 
-    // Instead of creating a script just for the boss UI we'll put it in here.
+    // Instead of creating a separate script just for the boss UI we'll put it in here.
     public GameObject bossPanel;
     public Text warning;
     public Text message;
@@ -81,6 +81,7 @@ public class ModalPanel : Singleton<ModalPanel>
         action = () => { callback(); ClosePanel(); };
     }
 
+    // Use if you want to open up a new panel in the callback.
     public static void Message(string msg1, string msg2, string buttonString, UnityAction callback, bool closePanel)
     {
         OpenPanel(TIMESCALE_OPTIONS.TIMESCALE_1);

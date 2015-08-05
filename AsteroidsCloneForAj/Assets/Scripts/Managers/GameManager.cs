@@ -87,6 +87,7 @@ public class GameManager : Singleton<GameManager>
     {
         AudioManager.PlayBGM("Menu", TRANSITION.INSTANT);
 
+        // Initialise all our object pools
         BigAsteroidPool = new GameObjectPool(asteroidBig, 10, true, transform);
         SmallAsteroidPool = new GameObjectPool(asteroidSmall, 20, true, transform);
         EnemyShipPool = new GameObjectPool(enemyShip, 1, false, transform);
@@ -108,7 +109,6 @@ public class GameManager : Singleton<GameManager>
 
     public static void GameStart()
     {       
-        //Instance.gameOverPanel.SetActive(false);
         CurrentLives = MaxLives;
         Instance.StartCoroutine(Instance.SpawnShip(false, 0));
         Instance.StartCoroutine(Instance.SpawnAsteroids());
@@ -116,12 +116,13 @@ public class GameManager : Singleton<GameManager>
         SmallAsteroidPool.DisableAll();
         Score = 0;
         AudioManager.PlayBGM("Game", TRANSITION.INSTANT);
-        Messenger.Broadcast("Update UI");    
+        Messenger.Broadcast("Update UI");
     }
 
     public static void ResetBoard()
     {
         HighScore = Score;
+        Messenger.Broadcast("Update UI");
         Messenger.Broadcast("Reset", MessengerMode.DONT_REQUIRE_LISTENER);
         AudioManager.PlayBGM("Menu", TRANSITION.INSTANT);
         Instance.StopAllCoroutines();

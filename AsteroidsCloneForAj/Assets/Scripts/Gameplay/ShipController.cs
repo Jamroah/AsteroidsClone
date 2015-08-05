@@ -61,7 +61,8 @@ public class ShipController : ScreenwrapObject, IDamageable
 
     public void Fire()
     {
-        // Activate a bullet immediately (the "true" part) and hold a reference to it because we need to check if it's null before we go any further
+        // Activate a bullet immediately (the "true" part) but hold a reference to it because we need to check if it's null before we go any further.
+        // Because we limit the amount of player bullets on screen it's possible for the Get() function to return null.
         GameObject bullet = m_bulletPool.Get(true);
 
         if (bullet == null)
@@ -109,6 +110,7 @@ public class ShipController : ScreenwrapObject, IDamageable
         AudioManager.PlaySFX("Ship Explosion");
     }
 
+    // Kinda unelegant, but it works so...
     public IEnumerator Invincibility()
     {
         m_collider2D.enabled = false;

@@ -26,7 +26,7 @@ public class Bullet : ScreenwrapObject
     }
 
     /// <summary>
-    /// Fires a bullet with a defined direction.
+    /// Fires a bullet in a defined angle from the origin.
     /// </summary>
     /// <param name="owner"></param>
     /// <param name="degrees"></param>

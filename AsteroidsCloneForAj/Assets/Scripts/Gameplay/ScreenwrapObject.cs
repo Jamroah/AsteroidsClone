@@ -4,6 +4,7 @@ using System.Collections;
 public class ScreenwrapObject : MonoBehaviour
 {
     public bool startOffScreen;
+    public bool canWrap = true;
 
     protected Camera MainCamera
     {
@@ -19,12 +20,11 @@ public class ScreenwrapObject : MonoBehaviour
     protected Renderer[] m_renderers;
 
     private Vector3 m_viewportPosition = new Vector3();
-    private bool wrapX, wrapY, hasAppeared = true, canWrap = true;
+    private bool wrapX, wrapY, hasAppeared = true;
     private Camera m_camera;
 
     public virtual void Awake()
     {
-        // Create a reference to stop from incessant GetComponent calls.
         m_transform = transform;
     }
 
@@ -36,7 +36,6 @@ public class ScreenwrapObject : MonoBehaviour
             hasAppeared = false;
     }
 
-    // Update is called once per frame
     public virtual void Update()
     {
         if(canWrap)

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// Again, quite spaghetti-like. First ever boss-character I've scripted, actually.
+
 public class AJEye : MonoBehaviour, IDamageable
 {
     public SpriteRenderer renderer;

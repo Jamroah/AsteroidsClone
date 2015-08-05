@@ -19,6 +19,10 @@ public class InputManager
 {
     public static Stack<INPUT_CONTEXT> contextStack = new Stack<INPUT_CONTEXT>();
 
+    /// <summary>
+    /// Pushes an input context onto the stack. We don't push if it already exists.
+    /// </summary>
+    /// <param name="context"></param>
     public static void PushInputContext(INPUT_CONTEXT context)
     {
         if (context == contextStack.Peek())
@@ -31,6 +35,10 @@ public class InputManager
         Debug.Log("[InputManager.cs] Added context " + contextStack.Peek().ToString());
     }
 
+    /// <summary>
+    /// Pops an input context off of the stack. If it's not on the top, we don't pop.
+    /// </summary>
+    /// <param name="context"></param>
     public static void PopInputContext(INPUT_CONTEXT context)
     {
         if (contextStack.Count == 0)

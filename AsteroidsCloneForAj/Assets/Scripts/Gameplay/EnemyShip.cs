@@ -54,7 +54,6 @@ public class EnemyShip : ScreenwrapObject, IDamageable
         {           
             col.gameObject.GetComponent<IDamageable>().TakeDamage(1, gameObject);
             //Debug.Log("Enemy hit buy something other than a bullet");
-            //Die();
         }
     }
 
