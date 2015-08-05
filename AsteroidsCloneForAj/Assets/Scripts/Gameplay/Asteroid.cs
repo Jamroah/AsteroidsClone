@@ -39,6 +39,7 @@ public class Asteroid : ScreenwrapObject, IDamageable
     public virtual void Die()
     {
         // Here will be a particle system;
+        AudioManager.PlaySFX("Enemy Explosion", 0.5f, 0.75f);
         gameObject.SetActive(false);
     }
 

@@ -102,8 +102,8 @@ public class GameManager : Singleton<GameManager>
         else if (InputManager.GetButtonDown("Pause", INPUT_CONTEXT.PAUSE))
             ModalPanel.UnPauseGame();
 
-        if (Input.GetKeyDown(KeyCode.KeypadPlus))
-            Score += 10000;
+        //if (Input.GetKeyDown(KeyCode.KeypadPlus))
+            //Score += 10000;
     }
 
     public static void GameStart()

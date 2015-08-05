@@ -88,6 +88,7 @@ public class AJEye : MonoBehaviour, IDamageable
     public void Die()
     {
         // We don't destroy or disable the game object because we still need the health property.
+        AudioManager.PlaySFX("Enemy Explosion", 0.4f, 0.6f);
         m_disabled = true;
         renderer.enabled = false;
         m_collider.enabled = false;

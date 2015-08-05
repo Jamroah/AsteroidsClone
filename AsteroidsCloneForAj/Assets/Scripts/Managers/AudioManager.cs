@@ -59,7 +59,7 @@ public class AudioManager : Singleton<AudioManager>
 
     private float m_masterVolume = 1f;
     private float m_bgmVolume = 1f;
-    private float m_sfxVolume = 0.75f;
+    private float m_sfxVolume = 0.5f;
 
     private float fadeDuration = 1f;
 

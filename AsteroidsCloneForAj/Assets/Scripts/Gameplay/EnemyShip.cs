@@ -14,10 +14,12 @@ public class EnemyShip : ScreenwrapObject, IDamageable
         base.OnEnable();
         Invoke("Die", 7);
         Invoke("Fire", 1);
+        AudioManager.PlayAFX("Enemy Ship", TRANSITION.INSTANT);
     }
 
     public void OnDisable()
     {
+        AudioManager.StopAFX(TRANSITION.INSTANT);
         CancelInvoke();
     }
 
@@ -70,6 +72,8 @@ public class EnemyShip : ScreenwrapObject, IDamageable
     public void Die()
     {
         CancelInvoke();
+        AudioManager.StopAFX(TRANSITION.INSTANT);
+        AudioManager.PlaySFX("Enemy Explosion", 0.9f, 1.1f);
         gameObject.SetActive(false);
     }
 

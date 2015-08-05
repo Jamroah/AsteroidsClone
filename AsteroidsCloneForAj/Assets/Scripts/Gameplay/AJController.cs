@@ -135,6 +135,7 @@ public class AJController : MonoBehaviour
     IEnumerator DeathSequence()
     {
         m_anim.SetTrigger("Dead");
+        AudioManager.PlaySFX("Boss Death");
         yield return new WaitForSeconds(2);
         ModalPanel.Message("YOU WIN, CONGRATULATIONS!", "Press START to begin a new adventure", "Start", GameManager.ResetBoard, false);
     }
