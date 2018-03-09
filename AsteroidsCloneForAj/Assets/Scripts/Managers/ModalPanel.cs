@@ -17,7 +17,6 @@ public class ModalPanel : Singleton<ModalPanel>
     public Text title;
     public Text subtitle;
 
-    // Instead of creating a separate script just for the boss UI we'll put it in here.
     public GameObject bossPanel;
     public Text warning;
     public Text message;
@@ -43,6 +42,10 @@ public class ModalPanel : Singleton<ModalPanel>
         }
     }
 
+    /// <summary>
+    /// Opens the modal panel and pushes INPUT_CONTEXT modal.
+    /// </summary>
+    /// <param name="options"></param>
     public static void OpenPanel(TIMESCALE_OPTIONS options)
     {
         Instance.modalPanel.SetActive(true);
@@ -61,6 +64,9 @@ public class ModalPanel : Singleton<ModalPanel>
         }
     }
 
+    /// <summary>
+    /// Closes the modal panel and pops the INPUT_CONTEXT modal.
+    /// </summary>
     public static void ClosePanel()
     {
         Time.timeScale = 1;
@@ -103,7 +109,7 @@ public class ModalPanel : Singleton<ModalPanel>
     {
         OpenPanel(TIMESCALE_OPTIONS.TIMESCALE_1);
 
-        Instance.title.text = "AJ's ASTEROIDS";
+        Instance.title.text = "ASTEROIDS";
         Instance.subtitle.text = "Press FIRE to play\n\nHighscore: " + GameManager.HighScore;
 
         button = "Fire";
